@@ -27,6 +27,14 @@
            name: mariadb
            state: started
            enabled: yes
+           
+      - name: Copying .my.cnf file for idempotency 
+        template:
+           src: client.my.cnf.j2
+           dest: /root/.my.cnf
+           owner: root
+           group: root
+           mode: 600           
 
       - name: Set root user password
         mysql_user: 
@@ -35,14 +43,6 @@
            host_all: yes
            login_unix_socket: /var/lib/mysql/mysql.sock
            state: present
-
-      - name: Copying .my.cnf file for idempotency 
-        template:
-           src: client.my.cnf.j2
-           dest: /root/.my.cnf
-           owner: root
-           group: root
-           mode: 600
 
       - name: Creating a user for wordpress
         mysql_user:
